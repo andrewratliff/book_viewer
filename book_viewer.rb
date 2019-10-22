@@ -1,19 +1,19 @@
-require "sinatra"
-require "sinatra/reloader"
-require "tilt/erubis"
+require 'sinatra'
+require 'sinatra/reloader'
+require 'tilt/erubis'
 require 'pry'
 
-get "/" do
+get '/' do
   @title = 'The Adventures of Sherlock Holmes'
   @contents = File.readlines('data/toc.txt')
   erb :home
 end
 
-get "/chapters/:chapter_number" do
-  chapter_number = params[:chapter_number]
-  @title = "Chapter #{chapter_number}"
+get '/chapters/:number' do
   @contents = File.readlines('data/toc.txt')
-  @chapter = File.read("data/chp#{chapter_number}.txt").split("\n")
+  number = params[:number].to_i
+  @title = "Chapter #{number}: #{@contents[number - 1]}"
+  @chapter = File.read("data/chp#{number}.txt").split("\n")
 
   erb :chapter
 end
